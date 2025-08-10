@@ -1,0 +1,43 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://headshot.cam/sitemap.xml
+
+# Crawl delay (optional, helps with server load)
+Crawl-delay: 1
+
+# Specific rules for different bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block access to sensitive areas (if any)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /config/
+
+# Allow access to important resources
+Allow: /assets/
+Allow: /images/
+Allow: /css/
+Allow: /js/
+
+# Additional sitemaps (if you have them)
+# Sitemap: https://headshot.cam/sitemap-images.xml
+# Sitemap: https://headshot.cam/sitemap-blog.xml
+
