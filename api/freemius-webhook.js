@@ -192,9 +192,23 @@ export default async function handler(req, res) {
 
   const verified = verifyFreemiusSignature(rawBody, req)
 
+  // Parse body per content-type
+  const contentType = String(req.headers['content-type'] || '').toLowerCase()
   let body = {}
   try {
-    body = JSON.parse(rawBody.toString('utf8') || '{}')
+    if (contentType.includes('application/json')) {
+      body = JSON.parse(rawBody.toString('utf8') || '{}')
+    } else if (contentType.includes('application/x-www-form-urlencoded')) {
+      const params = new URLSearchParams(rawBody.toString('utf8'))
+      body = Object.fromEntries(params.entries())
+      // Attempt to parse nested JSON if present in a common field
+      if (body?.payload && typeof body.payload === 'string') {
+        try { body = JSON.parse(body.payload) } catch {}
+      }
+    } else {
+      // Best-effort JSON parse fallback
+      body = JSON.parse(rawBody.toString('utf8') || '{}')
+    }
   } catch {
     body = {}
   }
@@ -214,7 +228,6 @@ export default async function handler(req, res) {
     identifiers: { userEmail, userId, licenseId, subscriptionId, planId },
   })
 
-  // Upsert in background but don't block response excessively
   try {
     await upsertSubscription({
       userEmail,
@@ -231,6 +244,5 @@ export default async function handler(req, res) {
     console.log('[upsert-error]', e?.message)
   }
 
-  // Always 200 to avoid webhook retries while configuring, include verification flag
   return res.status(200).json({ received: true, verified })
 } 
