@@ -1,8 +1,9 @@
 {
   "version": 2,
+  "framework": "vite",
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "vite.config.js", "use": "@vercel/static-build" }
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
   ],
   "routes": [
     { "src": "/api/freemius-webhook", "dest": "/api/freemius-webhook.js", "methods": ["POST"] },
@@ -10,6 +11,5 @@
     { "src": "/api/health", "dest": "/api/health.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
-  "framework": "vite",
   "env": { "NODEJS_HELPERS": "1" }
 } 
