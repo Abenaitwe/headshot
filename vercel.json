@@ -9,6 +9,7 @@
     { "src": "/api/freemius-webhook", "dest": "/api/freemius-webhook.js", "methods": ["POST"] },
     { "src": "/freemius/webhook", "dest": "/api/freemius-webhook.js", "methods": ["POST"] },
     { "src": "/api/health", "dest": "/api/health.js" },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "env": { "NODEJS_HELPERS": "1" }
